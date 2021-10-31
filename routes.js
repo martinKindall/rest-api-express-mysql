@@ -6,4 +6,11 @@ module.exports = function(app) {
             {nombre: 'python'}
         ]);
     });
+
+    app.post('/lenguajes', (req, res) => {
+        const newLenguaje = req.body;
+        console.log(newLenguaje);
+
+        res.json({message: "created!"});
+    });
 };
