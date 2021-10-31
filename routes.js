@@ -1,16 +1,24 @@
-module.exports = function(app) {
+
+module.exports = function(app, databaseService) {
 
     app.get('/lenguajes', (req, res) => {
-        res.json([
-            {nombre: 'javascript'},
-            {nombre: 'python'}
-        ]);
+        databaseService.getLenguages()
+            .then(lenguajes => res.json(lenguajes))
+            .catch(e => res.status(500).send(e));
     });
 
     app.post('/lenguajes', (req, res) => {
         const newLenguaje = req.body;
         console.log(newLenguaje);
-
-        res.json({message: "created!"});
+        databaseService
+            .crearLenguaje(
+                newLenguaje.nombre, 
+                newLenguaje.lanzamiento, 
+                newLenguaje.tipado_estatico)
+            .then(() => {
+                res.json({message: "created!"});
+            }).catch(e => {
+                res.status(500).send(e);
+            });
     });
 };
